@@ -1,5 +1,5 @@
 # Validator-SSN
-a validator for Finnish security number
+A validator for Finnish Security Number implemented by Node.js and Express.js
 
 How to Install and Test:
 
