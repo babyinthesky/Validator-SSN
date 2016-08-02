@@ -2,6 +2,7 @@
 a validator for Finnish security number
 
 How to Install and Test:
+
 1.Install node.js and express.js
 
 2.run "DEBUG=validator:* npm start" from the folder where validator code stays
