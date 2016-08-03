@@ -15,23 +15,24 @@ var sendErr=function(res,err){
 
 /* Validator for SSN */
 router.get('/', function(req, res, next) {
-  id=req.query.ssn;
-  console.log(id);
+  var id=req.query.ssn;
 
   res.set('Content-Type', 'text/plain');
 
   if(typeof id ==='undefined') {res.status(400).send('400 Invalid HTTP query. Valid query example: /validateSSN/?ssn=131052-308T');}
+
   //step1: check the format of input, string length has to be 11,
   // from which first 6 are digits, century is '-','+',or 'A'
   // 8th to 10th are digits
+  var century = id.substr(6,1);
+  var personNum = id.substr(7,3);
+
   if(id.length!==11) return sendErr(res,'SSN Length is not 11');
 
   if(!isNum(id.substr(0,6))) return sendErr(res,'Birthday is not a number');
 
-  var century = id.substr(6,1);
   if((century!=='+')&&(century!=='-')&&(century!=='A')) return sendErr(res,'Century sign is wrong');
 
-  var personNum = id.substr(7,3);
   if(!isNum(personNum)) return sendErr(res,'Individual number is not a number');
 
   //step2: validate birthday
@@ -84,6 +85,7 @@ router.get('/', function(req, res, next) {
   //step4: validate checksum
   var remainder = parseInt(id.substr(0,6)+id.substr(7,3)) % 31;
   var str='0123456789ABCDEFHJKLMNPRSTUVWXY';
+
   if(id.substr(10,1)!==str.substr(remainder,1)) return sendErr(res,'Checksum is not valid');
 
   //Passed all validation, and the result is true:
